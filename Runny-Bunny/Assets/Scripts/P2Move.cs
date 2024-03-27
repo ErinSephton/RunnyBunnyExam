@@ -6,9 +6,11 @@ public class P2Move : MonoBehaviour
 {
     public float MovementSpeed = 5f;
 
-    public float JumpUpForce = 5f;
+    public float BounceUpForce = 5f;
 
-    public float JumpLeftForce = 5f;
+    public float BounceLeftForce = 5f;
+
+    public float JumpForce = 1f;
 
     Rigidbody2D rb;
 
@@ -43,15 +45,20 @@ public class P2Move : MonoBehaviour
         Vector2 direction = CalculateDirection();
 
         transform.Translate(direction * MovementSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);         
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "enemy")
         {
-            rb.AddForce(Vector2.left * JumpLeftForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.left * BounceLeftForce, ForceMode2D.Impulse);
 
-            rb.AddForce(Vector2.up * JumpUpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * BounceUpForce, ForceMode2D.Impulse);
 
             Debug.Log("Hit");
         }
